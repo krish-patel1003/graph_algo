@@ -34,7 +34,7 @@ public class FordFulkerson {
         return false;
     }
 
-    void fordFulkerson(int[][] graph, int s, int t){
+    int fordFulkerson(int[][] graph, int s, int t){
 
         int u, v;
         int[][] residualNet = new int[V][V];
@@ -53,8 +53,16 @@ public class FordFulkerson {
             for (v = t; v != s ; v = parent[v]) {
                 u = parent[v];
                 path_flow = Math.min(path_flow, residualNet[u][v]);
-                
             }
+
+            for (v = t; v != s; v = parent[v]) {
+                u = parent[v];
+                residualNet[u][v] -= path_flow;
+                residualNet[v][u] += path_flow;
+            }
+
+            max_flow += path_flow;
         }
+        return max_flow;
     }
 }
